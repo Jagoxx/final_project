@@ -1,8 +1,11 @@
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from app.infrastructure.db import Base
 from typing import AsyncGenerator
 
-DATABASE_URL = "postgresql+asyncpg://postgres:postgres@localhost:5432/mini_marketplace"
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+
+from app.infrastructure.db import Base, settings
+
+
+DATABASE_URL = settings.database_url
 
 engine = create_async_engine(DATABASE_URL, echo=True)
 

@@ -1,7 +1,5 @@
 from fastapi import FastAPI
-# from app.interfaces.api.orders import router as orders_router
-# from app.interfaces.api.products import router as products_router
-# from app.interfaces.api.users import router as users_router
+from app.interfaces.api.routes import router
 
 
 def create_app() -> FastAPI:
@@ -11,10 +9,8 @@ def create_app() -> FastAPI:
         description="Учебный проект"
     )
     
-    # app.include_router(users_router, prefix="/users", tags=["users"])
-    # app.include_router(products_router, prefix="/products", tags=["products"])
-    # app.include_router(orders_router, prefix="/orders", tags=["orders"])
-    
+    app.include_router(router)
+
     return app
 
 app = create_app()
