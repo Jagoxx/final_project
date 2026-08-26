@@ -1,16 +1,15 @@
+import json
 from uuid import UUID
 from app.domain import Order, OrderItem, OrderConfirmed
 from app.application import OrderRepository, ProductRepository
+from app.infrastructure.db import OutboxRepository
 
 
 class CreateOrder:
-    def __init__(
-        self,
-        order_repo: OrderRepository,
-        product_repo: ProductRepository,
-    ):
+    def __init__(self, order_repo: OrderRepository, product_repo: ProductRepository, outbox_repo: OutboxRepository):
         self.order_repo = order_repo
         self.product_repo = product_repo
+        self.outbox_repo = outbox_repo
     
     async def execute(
         self,
@@ -53,5 +52,12 @@ class CreateOrder:
             user_id=user_id,
             total_amount=order.total_amount,
         )
+
+        payload = json.dumps({
+            "order_id": str(event.order_id),
+            "user_id": str(event.user_id),
+            "total_amount": event.total_amount,
+        })
+        await self.outbox_repo.add(event_type="OrderConfirmed", payload=payload)
         
         return order

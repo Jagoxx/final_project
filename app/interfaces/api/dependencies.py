@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.application import CreateOrder
 from app.infrastructure.db import session_factory, SqlOrderRepository, SqlProductRepository
-
+from app.infrastructure.db import OutboxRepository
 
 async def get_session() -> AsyncGenerator[AsyncSession, None]:
     async with session_factory() as session:
@@ -18,4 +18,5 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
 async def get_create_order_use_case(session: AsyncSession = Depends(get_session)) -> CreateOrder:
     order_repo = SqlOrderRepository(session)
     product_repo = SqlProductRepository(session)
-    return CreateOrder(order_repo=order_repo, product_repo=product_repo)
+    outbox_repo = OutboxRepository(session)
+    return CreateOrder(order_repo=order_repo, product_repo=product_repo, outbox_repo=outbox_repo)

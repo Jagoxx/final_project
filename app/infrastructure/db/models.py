@@ -67,3 +67,13 @@ class OrderItemModel(Base):
     
     order: Mapped["OrderModel"] = relationship(back_populates="items")
     product: Mapped["ProductModel"] = relationship()
+
+class OutboxModel(Base):
+    """Таблица outbox для событий."""
+    __tablename__ = "outbox"
+    
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    event_type: Mapped[str] = mapped_column(String(100), nullable=False)
+    payload: Mapped[str] = mapped_column(String(1000), nullable=False)  # JSON строка
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    processed: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
