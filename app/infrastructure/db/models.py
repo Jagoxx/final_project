@@ -77,3 +77,13 @@ class OutboxModel(Base):
     payload: Mapped[str] = mapped_column(String(1000), nullable=False)  # JSON строка
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     processed: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+
+
+class IdempotencyKeyModel(Base):
+    """Таблица для идемпотентных ключей."""
+    __tablename__ = "idempotency_keys"
+    
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    key: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
+    order_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("orders.id", ondelete="CASCADE"), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)

@@ -2,7 +2,7 @@ import json
 from uuid import UUID
 from app.domain import Order, OrderItem, OrderConfirmed
 from app.application import OrderRepository, ProductRepository
-from app.infrastructure.db import OutboxRepository
+from app.infrastructure.db.outbox_repository import OutboxRepository
 
 
 class CreateOrder:
