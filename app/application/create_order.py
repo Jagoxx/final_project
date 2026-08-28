@@ -1,7 +1,8 @@
 import json
 from uuid import UUID
-from app.domain import Order, OrderItem, OrderConfirmed
-from app.application import OrderRepository, ProductRepository
+
+from app.application.ports import OrderRepository, ProductRepository
+from app.domain import Order, OrderConfirmed, OrderItem
 from app.infrastructure.db.outbox_repository import OutboxRepository
 
 

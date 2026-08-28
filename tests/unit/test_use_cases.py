@@ -2,8 +2,8 @@ from uuid import uuid4
 
 import pytest
 
-from app.domain import Product
 from app.application import CreateOrder
+from app.domain import Product
 from tests.in_memory_repositories import InMemoryOrderRepository, InMemoryProductRepository
 
 

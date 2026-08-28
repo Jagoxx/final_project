@@ -1,19 +1,33 @@
-import jwt
 from datetime import datetime, timedelta, timezone
 from uuid import UUID
 
+import jwt
 from fastapi import APIRouter, Depends, Header, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.application import CreateOrder
 from app.domain import Product, User
-from app.infrastructure.db import IdempotencyRepository, SqlOrderRepository, SqlProductRepository, SqlUserRepository
+from app.infrastructure.db import (
+    IdempotencyRepository,
+    SqlOrderRepository,
+    SqlProductRepository,
+    SqlUserRepository,
+)
 from app.infrastructure.db.config import settings
+from app.infrastructure.logging import get_logger
 from app.interfaces.api.dependencies import get_create_order_use_case, get_current_user, get_session
-from app.interfaces.api.schemas import CreateOrderRequest, OrderResponse, ProductCreateRequest, ProductResponse, UserCreateRequest, UserResponse
+from app.interfaces.api.schemas import (
+    OrderItemResponse,
+    CreateOrderRequest,
+    OrderResponse,
+    ProductCreateRequest,
+    ProductResponse,
+    UserCreateRequest,
+    UserResponse,
+)
 
+logger = get_logger(__name__)
 router = APIRouter()
-
 
 # AUTH
 
@@ -118,7 +132,7 @@ async def create_order(
                 status=order.status.value,
                 created_at=order.created_at,
                 total_amount=order.total_amount,
-                items=[{"product_id": item.product_id, "quantity": item.quantity, "price": item.price} for item in order.items],
+                items=[OrderItemResponse(product_id=item.product_id, quantity=item.quantity, price=item.price) for item in order.items],
             )
     
     try:
@@ -130,6 +144,8 @@ async def create_order(
         raise HTTPException(status_code=400, detail=str(e))
     
     await idem_repo.save(idempotency_key, order.id)
+
+    logger.info("order_created", order_id=order.id, user_id=order.user_id)
     
     return OrderResponse(
         id=order.id,
@@ -137,7 +153,7 @@ async def create_order(
         status=order.status.value,
         created_at=order.created_at,
         total_amount=order.total_amount,
-        items=[{"product_id": item.product_id, "quantity": item.quantity, "price": item.price} for item in order.items],
+        items=[OrderItemResponse(product_id=item.product_id, quantity=item.quantity, price=item.price) for item in order.items],
     )
 
 
@@ -155,5 +171,5 @@ async def get_order(order_id: UUID, session: AsyncSession = Depends(get_session)
         status=order.status.value,
         created_at=order.created_at,
         total_amount=order.total_amount,
-        items=[{"product_id": item.product_id, "quantity": item.quantity, "price": item.price} for item in order.items],
+        items=[OrderItemResponse(product_id=item.product_id, quantity=item.quantity, price=item.price) for item in order.items],
     )

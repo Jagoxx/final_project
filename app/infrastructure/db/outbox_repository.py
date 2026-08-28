@@ -1,9 +1,11 @@
 import uuid
-from uuid import UUID
 from datetime import datetime, timezone
+from uuid import UUID
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.infrastructure.db import OutboxModel
+
+from app.infrastructure.db.models import OutboxModel
 
 
 class OutboxRepository:
@@ -22,7 +24,7 @@ class OutboxRepository:
     
     async def get_unprocessed(self) -> list[OutboxModel]:
         result = await self.session.execute(
-            select(OutboxModel).where(OutboxModel.processed == False)
+            select(OutboxModel).where(OutboxModel.processed.is_(False))
         )
         return list(result.scalars().all())
     

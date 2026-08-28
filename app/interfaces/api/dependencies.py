@@ -3,12 +3,18 @@ from uuid import UUID
 
 import jwt
 from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.application import CreateOrder
 from app.domain import User
-from app.infrastructure.db import session_factory, SqlOrderRepository, SqlProductRepository, SqlUserRepository, OutboxRepository
+from app.infrastructure.db import (
+    OutboxRepository,
+    SqlOrderRepository,
+    SqlProductRepository,
+    SqlUserRepository,
+    session_factory,
+)
 from app.infrastructure.db.config import settings
 
 security = HTTPBearer()

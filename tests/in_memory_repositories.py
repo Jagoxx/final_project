@@ -1,6 +1,7 @@
 from uuid import UUID
-from app.domain import Order, Product, User
+
 from app.application.ports import OrderRepository, ProductRepository, UserRepository
+from app.domain import Order, Product, User
 
 
 class InMemoryUserRepository(UserRepository):

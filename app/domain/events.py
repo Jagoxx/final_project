@@ -8,14 +8,6 @@ class DomainEvent:
     event_id: UUID
     event_type: str
     occurred_at: datetime
-    
-    @classmethod
-    def create(cls, event_type: str) -> "DomainEvent":
-        return cls(
-            event_id=uuid4(),
-            event_type=event_type,
-            occurred_at=datetime.now(timezone.utc),
-        )
 
 
 @dataclass

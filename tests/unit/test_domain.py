@@ -1,7 +1,8 @@
 from uuid import uuid4
-import pytest
-from app.domain import User, UserRole, Product, Order, OrderItem, OrderStatus
 
+import pytest
+
+from app.domain import Order, OrderItem, OrderStatus, Product, User, UserRole
 
 # ТЕСТЫ USER
 

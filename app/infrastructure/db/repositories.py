@@ -1,12 +1,12 @@
 import uuid
 from uuid import UUID
 
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.domain import Order, OrderItem, OrderStatus, Product, User, UserRole
 from app.application.ports import OrderRepository, ProductRepository, UserRepository
+from app.domain import Order, OrderItem, OrderStatus, Product, User, UserRole
 from app.infrastructure.db import OrderItemModel, OrderModel, ProductModel, UserModel
 
 
