@@ -17,8 +17,8 @@ from app.infrastructure.db.config import settings
 from app.infrastructure.logging import get_logger
 from app.interfaces.api.dependencies import get_create_order_use_case, get_current_user, get_session
 from app.interfaces.api.schemas import (
-    OrderItemResponse,
     CreateOrderRequest,
+    OrderItemResponse,
     OrderResponse,
     ProductCreateRequest,
     ProductResponse,
