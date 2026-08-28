@@ -10,3 +10,4 @@ aio-pika==9.5.5
 pyjwt==2.10.1
 structlog==24.4.0
 ruff==0.8.4
+pyright==1.1.390

@@ -47,7 +47,7 @@ jobs:
         run: ruff check .
       
       - name: Run pyright
-        run: pyright
+        run: python -m pyright
       
       - name: Run tests
         env:
